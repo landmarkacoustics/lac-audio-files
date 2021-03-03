@@ -1,0 +1,17 @@
+[metadata]
+name = lacaudiofiles
+version = 0.0.1
+author = Benjamin Taft
+author_email = ben.taft@landmarkacoustics.com
+description = Read and write audio files
+long_description = file: README.md
+long_description_content_type = text/markdown
+url = https://github.com/landmarkacoustics/lac-audio-files
+classifiers =
+    Programming Language :: Python :: 3
+    License :: OSI Approved :: MIT License
+    Operating System :: OS Independent
+
+[options]
+packages = find:
+python_requires = >=3.6
