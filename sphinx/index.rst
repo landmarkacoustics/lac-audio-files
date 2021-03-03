@@ -3,14 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to lacaudiofiles's documentation!
-=========================================
+=============
+lacaudiofiles
+=============
+
+Python code for manipulating audio files.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   wave
+   wave/index
 
 
 Indices and tables

@@ -1,21 +1,8 @@
 .. Copyright (C) 2021 by Landmark Acoustics LLC
 
-====
-wave
-====
-
------------
 HeaderChunk
 -----------
 .. py:module:: lacaudiofiles.wave.header_chunk
 
 .. autoclass:: HeaderChunk
-   :members:
-
------------
-DataChunk
------------
-.. py:module:: lacaudiofiles.wave.data_chunk
-
-.. autoclass:: DataChunk
    :members:
