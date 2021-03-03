@@ -1,0 +1,15 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+import pytest
+
+from lacaudiofiles.wave.data_chunk import DataChunk
+
+
+@pytest.mark.parametrize('code_size_answer', [
+    ('fooo', 42),
+    ('barr', 1),
+    ('----', 99),
+    ('fail', -1)
+],
+                         indirect=True)
+def test_header_chunk(code_size_answer):

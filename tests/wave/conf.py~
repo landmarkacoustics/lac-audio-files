@@ -1,0 +1,14 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+@pytest.fixture
+def code_size_answer(request):
+    code, size = request.param
+    answer = struct.pack('4si',
+                         code.encode('ascii'),
+                         size)
+    return (
+        code,
+        size,
+        answer
+    )
+

@@ -48,7 +48,6 @@ class HeaderChunk:
         r"""How long the chunk is, in bytes."""
         return self._size
 
-    @property
     def values(self) -> struct:
         r""" The values that the chunk contains.
 
