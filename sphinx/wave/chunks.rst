@@ -13,3 +13,4 @@ Chunks are the components of a RIFF file.
    header_chunk
    data_chunk
    format_chunk
+   wave_chunk
