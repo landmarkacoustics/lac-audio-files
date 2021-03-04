@@ -2,7 +2,7 @@
 
 HeaderChunk
 -----------
+
 .. py:module:: lacaudiofiles.wave.header_chunk
 
 .. autoclass:: HeaderChunk
-   :members:

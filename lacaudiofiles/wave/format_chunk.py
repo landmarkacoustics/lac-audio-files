@@ -59,7 +59,7 @@ class FormatChunk(HeaderChunk):
             self._tag,
             self._channels,
             self._sample_rate,
-            self._frame_size * self._sample_rate,
+            self._bytes_per_sec,
             self._frame_size,
             self._bit_rate,
         )

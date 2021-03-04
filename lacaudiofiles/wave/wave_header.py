@@ -13,7 +13,7 @@ from .data_chunk import DataChunk
 
 
 class WaveHeader:
-    r'''Encapsulates the information for a WAV audio file.
+    r"""Encapsulates the information for a WAV audio file.
 
     Parameters
     ----------
@@ -22,7 +22,7 @@ class WaveHeader:
     bits_per_sample : int
         The number of bits per sample. >=32 means float. Less means integer.
     channels : int, optional
-        The number of samples per time step. Mono is 1, Stero is 2, etc.
+        The number of samples per time step. Mono is 1, Stereo is 2, etc.
     sample_rate : int, optional
         The number of frames measured per second.
 
@@ -36,7 +36,7 @@ class WaveHeader:
     --------
     TBD
 
-    '''
+    """
 
     def __init__(self,
                  frames,
@@ -46,35 +46,38 @@ class WaveHeader:
         self._format = FormatChunk(bits_per_sample,
                                    channels,
                                    sample_rate)
-        data_size = frames * self._format.frame_size()
+        self._frames = frames
+        data_size = frames * self._format.frame_size
         self._wave = WaveChunk(data_size)
         self._data = DataChunk(data_size)
 
-    def as_bytes(self):
-        r'''Output the header in binary format.'''
-
-        return (self._wave.as_bytes() +
-                self._format.as_bytes() +
-                self._data.as_bytes())
-
     @property
-    def sample_rate(self):
-        r'''report the sample rate.'''
+    def sample_rate(self) -> int:
+        r"""report the sample rate."""
         return self._format.sample_rate
 
     @property
-    def duration(self):
-        r'''the length of the sound, in seconds.'''
+    def frames(self) -> int:
+        r"""report the number of samples"""
+        return self._frames
 
-        return self._data.size / self.sample_rate
+    @property
+    def duration(self) -> float:
+        r"""the length of the sound, in seconds."""
 
-    def times(self):
-        r'''Generator of times corresponding to each frame.'''
+        return self._data.size / self._format.frame_size / self.sample_rate
 
-        time = 0.0
-        duration = self.duration
-        delta_t = 1.0 / duration
+    def as_bytes(self) -> bytes:
+        r"""Output the header in binary format."""
 
-        while time < duration:
-            yield time
-            time += delta_t
+        return self._wave.as_bytes() + \
+            self._format.as_bytes() + \
+            self._data.as_bytes()
+
+    def times(self) -> float:
+        r"""Generator of times corresponding to each frame."""
+
+        delta_t = 1.0 / self.sample_rate
+
+        for f in range(self.frames):
+            yield f * delta_t

@@ -6,3 +6,4 @@ WaveChunk
 .. py:module:: lacaudiofiles.wave.wave_chunk
 
 .. autoclass:: WaveChunk
+   :members:

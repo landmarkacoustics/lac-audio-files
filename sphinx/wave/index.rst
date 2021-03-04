@@ -9,3 +9,4 @@ A sub-package for manipulating WAV-formatted files
    :maxdepth: 2
 
    chunks
+   wave_header

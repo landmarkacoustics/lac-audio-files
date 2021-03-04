@@ -3,7 +3,7 @@
 
 DataChunk
 ---------
+
 .. py:module:: lacaudiofiles.wave.data_chunk
 
 .. autoclass:: DataChunk
-   :members:

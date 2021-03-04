@@ -1,8 +1,8 @@
 .. Copyright (C) 2021 by Landmark Acoustics LLC
 
-------
-Chunks
-------
+-------------
+Chunk Classes
+-------------
 
 WAV is a sub-format of RIFF.
 Chunks are the components of a RIFF file.

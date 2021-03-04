@@ -2,7 +2,7 @@
 
 FormatChunk
 -----------
+
 .. py:module:: lacaudiofiles.wave.format_chunk
 
 .. autoclass:: FormatChunk
-   :members:

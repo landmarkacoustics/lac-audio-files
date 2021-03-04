@@ -38,7 +38,15 @@ extensions = [
     'sphinx.ext.autosummary',
 ]
 
+# -- AutoDoc settings --------------------------------------------------------
 autosummary_generate = True
+autodoc_inherit_docstrings = False
+autodoc_default_options = {
+    'members': True,
+    'show-inheritance': True,
+}
+
+# -- NumPyDoc settings -------------------------------------------------------
 numpydoc_show_class_members = False
 
 # Add any paths that contain templates here, relative to this directory.
