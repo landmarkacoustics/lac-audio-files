@@ -9,14 +9,35 @@ from lacaudiofiles.wave.wave_header import WaveHeader
 from helpers import chunk_bytes
 
 
-@pytest.mark.parametrize('frames', [1, 10, 20, 42, 99000])
-@pytest.mark.parametrize('bits', [2**x for x in range(3, 10)])
-@pytest.mark.parametrize('channels', [1, 2, 4])
-@pytest.mark.parametrize('Hz', [1, 1000, 44100, 98000])
-def test_wave_header_starts(frames,
-                            bits,
-                            channels,
-                            Hz):
+@pytest.fixture(scope='module',
+                params=[-1, 0, 1, 99000])
+def frames(request):
+    r"""The number of frames in the wave file."""
+    return request.param
+
+
+@pytest.fixture(scope='module',
+                params=[8, 32, 64])
+def bits(request):
+    r"""The number of bits per sample in the wave file."""
+    return request.param
+
+
+@pytest.fixture(scope='module',
+                params=[1, 2, 4])
+def channels(request):
+    r"""The number of channels in the wave file."""
+    return request.param
+
+
+@pytest.fixture(scope='module',
+                params=[1, 44100, 98000])
+def Hz(request):
+    r"""The sample rate of the wave file."""
+    return request.param
+
+
+def test_wave_header_starts(frames, bits, channels, Hz):
     r"""Does the wave header assemble itself correctly?"""
 
     wh = WaveHeader(frames,
@@ -28,14 +49,7 @@ def test_wave_header_starts(frames,
     assert wh.duration == frames / Hz
 
 
-@pytest.mark.parametrize('frames', [1, 10, 20, 42, 99000])
-@pytest.mark.parametrize('bits', [2**x for x in range(3, 10)])
-@pytest.mark.parametrize('channels', [1, 2, 4])
-@pytest.mark.parametrize('Hz', [1, 1000, 44100, 98000])
-def test_wave_header_as_bytes(frames,
-                              bits,
-                              channels,
-                              Hz):
+def test_wave_header_as_bytes(frames, bits, channels, Hz):
     r"""The bytes representation of a WaveHeader is actually quite long."""
 
     wh = WaveHeader(frames, bits, channels, Hz)
@@ -60,14 +74,7 @@ def test_wave_header_as_bytes(frames,
     assert wh.as_bytes() == wave_chunk + format_chunk + data_chunk
 
 
-@pytest.mark.parametrize('frames', [1, 10, 20, 42, 99000])
-@pytest.mark.parametrize('bits', [2**x for x in range(3, 10)])
-@pytest.mark.parametrize('channels', [1, 2, 4])
-@pytest.mark.parametrize('Hz', [1, 1000, 44100, 98000])
-def test_wave_header_times(frames,
-                           bits,
-                           channels,
-                           Hz):
+def test_wave_header_times(frames, bits, channels, Hz):
     r"""Generate times for each frame of the file."""
 
     wh = WaveHeader(frames, bits, channels, Hz)
