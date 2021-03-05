@@ -1,5 +1,0 @@
-# Copyright (C) 2021 by Landmark Acoustics LLC
-
-import pytest
-
-from lacaudiofiles.wave.format_chunk import FormatChunk
