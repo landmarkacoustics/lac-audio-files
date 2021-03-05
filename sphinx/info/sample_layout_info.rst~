@@ -1,0 +1,8 @@
+.. Copyright (C) 2021 by Landmark Acoustics LLC
+
+SampleLayoutInfo
+----------------
+
+.. py:module:: lacaudiofiles.sample_layout_info
+
+.. autoclass:: SampleLayoutInfo

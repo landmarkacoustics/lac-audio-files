@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'lacaudiofiles'
-copyright = '(C) 2021 by Landmark Acoustics LLC'
+copyright = '2021 by Landmark Acoustics LLC'
 author = 'Ben Taft'
 
 # The full version, including alpha/beta/rc tags

@@ -1,18 +1,19 @@
 # Copyright (C) 2021 by Landmark Acoustics LLC
 r"""Keeps track of basic info about digital sound data."""
 
-import struct
+from .base_info import BaseInfo
+from .sample_format import SampleFormatInfo
 
 
-class AudioFormatInfo:
+class AudioFormatInfo(BaseInfo):
     r"""You need at least this much information to store sounds digitally.
 
     Parameters
     ----------
+    sample_format : SampleFormatInfo
+        The details about how individual values are stored.
     sample_rate : int
         The number of samples per second in the data.
-    element_format : str
-        The format code from the `struct` module that describes the data.
     channels : int, optional
         The number of channels in the data. The default is one.
     interleaved : bool, optional
@@ -24,45 +25,51 @@ class AudioFormatInfo:
 
     See Also
     --------
-    json : for serializing
-    struct : for the format codes
+    SampleFormatInfo : The first argument and property
 
     """
 
+    key_names = [
+        'sample_format',
+        'sample_rate',
+        'channels',
+        'interleaved',
+    ]
+
+    val_names = [
+        lambda x : dict(x.sample_format),
+        'sample_rate',
+        'channels',
+        'is_interleaved',
+    ]
+
     def __init__(self,
+                 sample_format: SampleFormatInfo,
                  sample_rate: int,
-                 element_format: str,
                  channels: int=1,
                  interleaved: bool=True) :
 
+        self._format = sample_format
         self._Hz = sample_rate
-        self._format = element_format
         self._channels = channels
         self._interleaved = interleaved
+
+    @property
+    def sample_format(self) -> SampleFormatInfo:
+        return self._format
 
     @property
     def sample_rate(self) -> int:
         return self._Hz
 
     @property
-    def element_format(self) -> str:
-        return self._format
-
-    @property
     def channels(self) -> int:
         return self._channels
 
     @property
-    def interleaved(self) -> bool:
+    def is_interleaved(self) -> bool:
         return self._interleaved
 
-    def as_dict(self) -> dict:
-        return {
-            'sample_rate': self.sample_rate,
-            'element_format': self.element_format,
-            'channels': self.channels,
-            'interleaved': self.interleaved
-        }
-
-    def __repr__(self) -> str:
-        return repr(self.as_dict())
+    @property
+    def bits_per_second(self) -> float:
+        return self._format.bit_size * self._channels * self._Hz

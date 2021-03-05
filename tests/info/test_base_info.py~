@@ -1,0 +1,44 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+import pytest
+
+from lacaudiofiles.info.base_info import BaseInfo
+
+
+def test_naked_base_info():
+    r"""Everything should just be blank."""
+
+    bi = BaseInfo()
+
+    assert bi.key_names == []
+    assert bi.val_names == []
+
+    assert dict(bi) == {}
+    assert repr(bi) == '{}'
+
+    assert bi == BaseInfo()
+
+
+class Modified(BaseInfo):
+    key_names = ['foo', 'bar', 'baz']
+    val_names = ['_foo', '_bar', 'baz']
+
+    def __init__(self, foo, bar, baz):
+        self._foo = foo
+        self._bar = bar
+        self._baz = baz
+
+    @property
+    def baz(self):
+        return self._baz
+
+
+def test_modified_base_info():
+    r"""Add some values to the keys and values and check functionality."""
+
+    cadmus = Modified(7, 7, 7)
+
+    castor = Modified(3, 1, 4)
+    pollux = Modified(3, 1, 4)
+
+    assert c

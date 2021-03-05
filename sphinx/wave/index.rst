@@ -3,10 +3,9 @@
 wave
 ====
 
-A sub-package for manipulating WAV-formatted files
-
 .. toctree::
    :maxdepth: 2
+   :caption: A sub-package for manipulating WAV-formatted files
 
    chunks
    wave_header

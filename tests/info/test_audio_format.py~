@@ -1,0 +1,59 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+from sys import byteorder as system_byteorder
+
+from numpy import dtype
+
+import pytest
+
+from lacaudiofiles.info.sample_format import SampleFormatInfo
+from lacaudiofiles.info.audio_format import AudioFormatInfo
+
+
+@pytest.mark.parametrize('size', [4])#, 2, 4, 8])
+@pytest.mark.parametrize('kind', ['float', 'integer'])
+@pytest.mark.parametrize('order', ['little', 'big'])
+@pytest.mark.parametrize('Hz', [1])#, 44100, 98000])
+@pytest.mark.parametrize('channels', [1])#, 2, 4])
+@pytest.mark.parametrize('interleaved', [True])#, False])
+def test_audio_format_info(size, kind, order, Hz, channels, interleaved):
+
+    if kind == 'float' and size < 4:
+        pytest.skip()
+
+    is_integer = kind == 'integer'
+    is_little_ended = order == 'little'
+
+    info = AudioFormatInfo(SampleFormatInfo(size,
+                                            is_integer,
+                                            is_little_ended),
+                           Hz,
+                           channels,
+                           interleaved)
+
+    assert info.bits_per_second == size * 8 * channels * Hz
+
+    assert info.is_interleaved == interleaved
+
+    assert info.channels == channels
+
+    assert info.sample_rate == Hz
+
+    sample_dict = {
+        'size' : size,
+        'integer' : is_integer,
+        'little_ended' : is_little_ended,
+    }
+
+    audio_dict = {
+        'sample_format' : sample_dict,
+        'sample_rate' : Hz,
+        'channels' : channels,
+        'interleaved' : interleaved,
+    }
+
+    assert dict(info) == audio_dict
+
+    assert str(info) == str(audio_dict)

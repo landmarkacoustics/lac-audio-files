@@ -1,0 +1,28 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+from sys import byteorder as system_byteorder
+
+from numpy import dtype
+
+import pytest
+
+from lacaudiofiles.audio_format_info import AudioFormatInfo
+
+
+@pytest.mark.parametrize('size,kind,order,code', [
+    (4, 'float', 'little', '<f4'),
+    (8, 'float', 'little', '<f8'),
+    (4, 'float', 'big', '>f4'),
+    (8, 'float', 'big', '>f8'),
+    (1, 'integer', 'little', '<i1'),
+    (2, 'integer', 'little', '<i2'),
+    (4, 'integer', 'little', '<i4'),
+    (8, 'integer', 'little', '<i8'),
+    (1, 'integer', 'big', '>i1'),
+    (2, 'integer', 'big', '>i2'),
+    (4, 'integer', 'big', '>i4'),
+    (8, 'integer', 'big', '>i8'),
+])
+def test_audio_format_info(size, kind, order, code):

@@ -6,31 +6,24 @@ from numpy import dtype
 
 import pytest
 
-from lacaudiofiles.sample_format_info import SampleFormatInfo
+from lacaudiofiles.info.sample_format import SampleFormatInfo
 
 
-@pytest.mark.parametrize('size,kind,order,code', [
-    (4, 'float', 'little', '<f4'),
-    (8, 'float', 'little', '<f8'),
-    (4, 'float', 'big', '>f4'),
-    (8, 'float', 'big', '>f8'),
-    (1, 'integer', 'little', '<i1'),
-    (2, 'integer', 'little', '<i2'),
-    (4, 'integer', 'little', '<i4'),
-    (8, 'integer', 'little', '<i8'),
-    (1, 'integer', 'big', '>i1'),
-    (2, 'integer', 'big', '>i2'),
-    (4, 'integer', 'big', '>i4'),
-    (8, 'integer', 'big', '>i8'),
-])
-def test_sample_format_info(size, kind, order, code):
+@pytest.mark.parametrize('size', [1, 2, 4, 8])
+@pytest.mark.parametrize('kind', ['float', 'integer'])
+@pytest.mark.parametrize('order', ['little', 'big'])
+def test_sample_format_info(size, kind, order):
     r"""Do the attributes line up?"""
+
+    if kind == 'float' and size < 2:
+        pytest.skip()
 
     is_integer = kind == 'integer'
     is_little_ended = order == 'little'
 
     byteorder = ['>', '<'][is_little_ended]
-    
+    code = f'{byteorder}{kind[0]}{size}'
+
     info = SampleFormatInfo(size,
                             is_integer,
                             is_little_ended)
@@ -64,3 +57,13 @@ def test_sample_format_info(size, kind, order, code):
     assert result.byteorder == byteorder
     assert result.kind == kind[0]
     assert result.itemsize == size
+
+    dictionary = {
+        'size': size,
+        'integer': is_integer,
+        'little_ended' : is_little_ended,
+    }
+
+    assert dict(info) == dictionary
+
+    assert str(info) == str(dictionary)
