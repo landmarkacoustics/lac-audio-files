@@ -11,7 +11,15 @@ Python code for manipulating audio files.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Format Information
+   :name: format_info
+   
+   sample_format_info
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Specific File Types
+   :name: file_types
 
    wave/index
 

@@ -1,0 +1,23 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+
+from numpy import dtype
+
+import pytest
+
+
+@pytest.mark.parametrize('size,kind,order,code', [
+    (4, 'float', 'little', '<f4'),
+    (8, 'float', 'little', '<f4'),
+    (4, 'float', 'big', '>f4'),
+    (8, 'float', 'big', '>f4'),
+    (1, 'integer', 'little', '<f1'),
+    (2, 'integer', 'little', '<f2'),
+    (4, 'integer', 'little', '<f4'),
+    (8, 'integer', 'little', '<f8'),
+    (1, 'integer', 'big', '>f1'),
+    (2, 'integer', 'big', '>f2'),
+    (4, 'integer', 'big', '>f4'),
+    (8, 'integer', 'big', '>f8'),
+    
+def test_sample_format_info():
+    r"""Do the attributes line up?"""

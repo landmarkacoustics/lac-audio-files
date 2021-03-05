@@ -1,0 +1,31 @@
+# Copyright (C) 2021 by Landmark Acoustics LLC
+r"""Basically a dumbed-down np.dtype."""
+
+class SampleFormatInfo:
+    r"""Cross-platform format information about a single piece of audio data.
+
+    Parameters
+    ----------
+    size : int
+        The number of bytes needed to store one sample.
+    integer : bool
+        If the data are stored as an integer (True) or a floating-point number.
+    little_ended : bool
+        If the  are stored as little- (True) or big- (False) ended.
+
+    """
+
+    def __init__(self, size: int, integer: int, little_ended: bool):
+        self._byte_size = size
+        self._is_integer = integer
+        self._is_little_ended = little_ended
+
+    @property
+    def byte_size(self) -> int:
+        r"""How many bytes it takes to store one sample."""
+        return self._byte_size
+
+    @property
+    def bit_size(self) -> int:
+        r"""How many bits it takes to store one sample."""
+        return self._byte_size // 8
