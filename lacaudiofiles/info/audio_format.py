@@ -7,7 +7,6 @@ from typing import (
 )
 
 from .base_info import BaseInfo
-from .helpers import type_or_dict
 from .sample_format import SampleFormatInfo
 from .sample_layout import SampleLayoutInfo
 

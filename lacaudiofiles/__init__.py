@@ -6,8 +6,6 @@ from . import (
     wave,
 )
 
-
-__all__ = [
-    'info',
-    'wave',
-]
+from .info import (
+    AudioFormatInfo,
+)

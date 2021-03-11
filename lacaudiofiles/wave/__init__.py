@@ -1,4 +1,5 @@
 # Copyright (C) 2021 by Landmark Acoustics LLC
+r"""Fairly low-level WAVE-file handlers."""
 
 from . import (
     header_chunk,

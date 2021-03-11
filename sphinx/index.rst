@@ -8,7 +8,6 @@ Python code for manipulating audio files.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
    :name: maintoc
 
    info/index

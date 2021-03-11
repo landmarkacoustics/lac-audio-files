@@ -65,6 +65,17 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = 'alabaster'
 
+html_theme_options = {
+    'logo': 'logo.png',
+    'logo_name': True,
+    'github_button': True,
+    'github_type': 'watch',
+    'github_user': 'landmarkacoustics',
+    'github_repo': 'lac-audio-files',
+    'description': 'Smart, Pythonic handling of audio files.',
+    
+}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
