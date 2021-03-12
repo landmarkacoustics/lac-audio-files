@@ -6,6 +6,8 @@ r"""Landmark Acoustics' implementation of a wave audio writer.
 
 """
 
+import struct
+
 
 from .wave_chunk import WaveChunk
 from .format_chunk import FormatChunk
@@ -50,6 +52,64 @@ class WaveHeader:
         data_size = frames * self._format.frame_size
         self._wave = WaveChunk(data_size)
         self._data = DataChunk(data_size)
+
+    @classmethod
+    def binary_format(cls) -> str:
+        r"""The format that `struct` would use to pack or unpack this header.
+
+        Returns
+        -------
+        str : a format string.
+
+        """
+
+        return ''.join([WaveChunk.format(),
+                        FormatChunk.format(),
+                        DataChunk.format()])
+
+    @classmethod
+    def unpack(cls, binary_data: bytes):
+        r"""Create a WaveHeader from packed binary data.
+
+        Parameters
+        ----------
+        binary_data : bytes
+            A valid WAVE header in binary format.
+
+        Returns
+        -------
+        WaveHeader : a new instance of this class.
+
+        """
+
+        (riff_string,
+         file_size,
+         wave_string,
+         fmt__string,
+         format_size,
+         tag_code,
+         channels,
+         sample_rate,
+         bytes_per_second,
+         frame_size,
+         bit_rate,
+         data_string,
+         data_size) = struct.unpack(cls.binary_format(),
+                                    binary_data)
+
+        assert riff_string == b'RIFF'
+        assert wave_string == b'WAVE'
+        assert fmt__string == b'fmt '
+        assert data_string == b'data'
+
+        header = cls(data_size // frame_size,
+                     bit_rate,
+                     channels,
+                     sample_rate)
+
+        assert header.as_bytes() == binary_data
+
+        return header
 
     @property
     def sample_rate(self) -> int:

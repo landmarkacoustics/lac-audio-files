@@ -9,6 +9,53 @@ from lacaudiofiles.wave.wave_header import WaveHeader
 from helpers import chunk_bytes
 
 
+def test_wave_header_binary_format():
+    r"""Does this static method produce what it should?"""
+
+    should_be = '4si4s' + '4siHhiihh' + '4si'
+
+    assert WaveHeader.binary_format() == should_be
+
+
+@pytest.mark.parametrize('data,answer', [
+    (b'RIFF\xe08\x07\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00D\xac\x00\x00\x88X\x01\x00\x02\x00\x10\x00data\xbc8\x07\x00',
+     {
+         'integer': True,
+         'sample_rate': 44100,
+         'bit_rate': 16,
+         'channels': 1,
+         'frames': 236638,
+     }),
+    (b'RIFF\xacX\x01\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00D\xac\x00\x00\x88X\x01\x00\x02\x00\x10\x00data\x88X\x01\x00',
+     {
+         'integer': True,
+         'sample_rate': 44100,
+         'bit_rate': 16,
+         'channels': 1,
+         'frames': 44100,
+     }),
+    (b'RIFFDb\x05\x00WAVEfmt \x10\x00\x00\x00\x03\x00\x02\x00D\xac\x00\x00 b\x05\x00\x08\x00 \x00data b\x05\x00',
+     {
+         'integer': False,
+         'sample_rate': 44100,
+         'bit_rate': 32,
+         'channels': 2,
+         'frames': 44100,
+     }),
+],
+                          ids=['chirp', 'mono', 'tones'])
+def test_unpack_binary_to_wave_header(data, answer):
+    r"""unpack binary header data and create the header object."""
+    header = WaveHeader.unpack(data)
+
+    assert header.sample_rate == answer['sample_rate']
+    assert header.frames == answer['frames']
+    assert header.duration == answer['frames'] / answer['sample_rate']
+
+    assert header._format.frame_size == answer['bit_rate'] * answer['channels'] // 8
+    assert header._format._tag == 1 if answer['integer'] else 3
+
+
 @pytest.fixture(scope='module',
                 params=[-1, 0, 1, 99000])
 def frames(request):

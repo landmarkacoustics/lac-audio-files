@@ -8,3 +8,9 @@ from . import (
     wave_chunk,
     wave_header,
 )
+
+from .wave_header import WaveHeader
+
+__all__ = [
+    'WaveHeader',
+]
