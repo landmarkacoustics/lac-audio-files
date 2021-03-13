@@ -9,11 +9,11 @@ class SampleFormatInfo(BaseInfo):
 
     Parameters
     ----------
-    size : int
+    byte_size : int
         The number of bytes needed to store one sample.
-    integer : bool
+    is_integer : bool
         If the data are stored as an integer (True) or a floating-point number.
-    little_ended : bool
+    is_little_ended : bool
         If the  are stored as little- (True) or big- (False) ended.
 
     See Also
@@ -22,22 +22,13 @@ class SampleFormatInfo(BaseInfo):
 
     """
 
-    key_names = [
-        'size',
-        'integer',
-        'little_ended',
-    ]
-
-    val_names = [
-        'byte_size',
-        'is_integer',
-        'is_little_ended',
-    ]
-
-    def __init__(self, size: int, integer: int, little_ended: bool):
-        self._byte_size = size
-        self._is_integer = integer
-        self._is_little_ended = little_ended
+    def __init__(self,
+                 byte_size: int,
+                 is_integer: int,
+                 is_little_ended: bool):
+        self._byte_size = byte_size
+        self._is_integer = is_integer
+        self._is_little_ended = is_little_ended
 
     @property
     def byte_size(self) -> int:

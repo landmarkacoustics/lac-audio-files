@@ -1,31 +1,20 @@
 # Copyright (C) 2021 by Landmark Acoustics LLC
 r"""Abstract base class for information objects."""
 
+import inspect
 
 class BaseInfo:
     r"""Common behavior for Info-type objects in `lacaudiofiles`.
 
-    Attributes
-    ----------
-    key_names : list[str]
-        The arguments to the class constructor.
-    val_names : list[str]
-        The attributes where the class constructor's values are stored.
+    Subclasses should have a set of properties that have the exact same names
+    as the arguments to their `__init__` functions.
 
     """
 
-    key_names = []
-    val_names = []
-
     def __iter__(self) -> tuple:
 
-        for k, v in zip(self.key_names, self.val_names):
-            if callable(v):
-                a = v(self)
-            else:
-                a = getattr(self, v)
-
-            yield (k, a)
+        for k in self.signature_keys():
+            yield (k, getattr(self, k))
 
     def __repr__(self) -> str:
         return repr(dict(self))
@@ -35,3 +24,8 @@ class BaseInfo:
 
     def __ne__(self, other) -> bool:
         return not self.__eq__(other)
+
+    @classmethod
+    def signature_keys(cls) -> list:
+        r"""Names of the inputs to this class. Also properties."""
+        return list(inspect.signature(cls).parameters.keys())

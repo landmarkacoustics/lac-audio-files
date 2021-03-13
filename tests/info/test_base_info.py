@@ -10,9 +10,6 @@ def test_naked_base_info():
 
     bi = BaseInfo()
 
-    assert bi.key_names == []
-    assert bi.val_names == []
-
     assert dict(bi) == {}
     assert repr(bi) == '{}'
 
@@ -22,8 +19,6 @@ def test_naked_base_info():
 
 
 class Modified(BaseInfo):
-    key_names = ['foo', 'bar', 'baz']
-    val_names = ['_foo', 'bar', lambda x: x.baz()]
 
     def __init__(self, foo, bar, baz):
         self._foo = foo
@@ -31,9 +26,14 @@ class Modified(BaseInfo):
         self._baz = baz
 
     @property
+    def foo(self):
+        return self._foo
+
+    @property
     def bar(self):
         return self._bar
 
+    @property
     def baz(self):
         return self._baz
 

@@ -17,7 +17,7 @@ def test_sample_layout_info(channels, interleaved):
 
     dictionary = {
         'channels': channels,
-        'interleaved': interleaved,
+        'is_interleaved': interleaved,
     }
 
     assert dict(layout) == dictionary

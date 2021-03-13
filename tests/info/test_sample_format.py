@@ -59,9 +59,9 @@ def test_sample_format_info(size, kind, order):
     assert result.itemsize == size
 
     dictionary = {
-        'size': size,
-        'integer': is_integer,
-        'little_ended' : is_little_ended,
+        'byte_size': size,
+        'is_integer': is_integer,
+        'is_little_ended' : is_little_ended,
     }
 
     assert dict(info) == dictionary

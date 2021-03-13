@@ -11,7 +11,7 @@ class SampleLayoutInfo(BaseInfo):
     ----------
     channels : int, optional
         The number of channels in the data. The default is one.
-    interleaved : bool, optional
+    is_interleaved : bool, optional
         `True` (the default) when the data are grouped by time, not by channel.
 
     Attributes
@@ -20,22 +20,12 @@ class SampleLayoutInfo(BaseInfo):
 
     """
 
-    key_names = [
-        'channels',
-        'interleaved',
-    ]
-
-    val_names = [
-        'channels',
-        'is_interleaved',
-    ]
-
     def __init__(self,
                  channels: int=1,
-                 interleaved: bool=True) :
+                 is_interleaved: bool=True) :
 
         self._channels = channels
-        self._interleaved = interleaved
+        self._interleaved = is_interleaved
 
     @property
     def channels(self) -> int:
