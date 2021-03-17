@@ -34,3 +34,19 @@ class SampleLayoutInfo(BaseInfo):
     @property
     def is_interleaved(self) -> bool:
         return self._interleaved
+
+    def frame_count(self, sample_count: int) -> int:
+        r"""The number of frames in a piece of data with `sample_count` items.
+
+        Parameters
+        ----------
+        sample_count : int
+            The number of samples, not necessarily bytes, in some binary data.
+
+        Returns
+        -------
+        int : the number of frames in some binary data
+
+        """
+
+        return sample_count // self.channels

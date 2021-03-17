@@ -74,3 +74,18 @@ class SampleFormatInfo(BaseInfo):
     def dtype_code(self) -> str:
         r"""The numpy character code for the dtype for these samples."""
         return f'{self.byteorder}{self.kind}{self.byte_size}'
+
+    def length_in_samples(self, data_size: int) -> int:
+        r"""How many individual sound samples could be in a `bytes` object.
+
+        Parameters
+        ----------
+        data_size : int
+            The length of the data in bytes
+
+        Returns
+        int : the number of samples in the data
+
+        """
+
+        return data_size // self.byte_size

@@ -10,6 +10,9 @@ from .base_info import BaseInfo
 from .sample_format import SampleFormatInfo
 from .sample_layout import SampleLayoutInfo
 
+from numpy import ndarray
+
+
 class AudioFormatInfo(BaseInfo):
     r"""You need at least this much information to store sounds digitally.
 
@@ -26,19 +29,8 @@ class AudioFormatInfo(BaseInfo):
     --------
     SampleFormatInfo : information about, e.g., bit rate and endianness
     SampleLayoutInfo : the number of channels and if they're interleaved
+
     """
-
-    key_names = [
-        'sample_format',
-        'sample_layout',
-        'sample_rate',
-    ]
-
-    val_names = [
-        lambda x: dict(x.sample_format),
-        lambda x: dict(x.sample_layout),
-        'sample_rate',
-    ]
 
     def __init__(self,
                  sample_format: Union[TypedDict, SampleFormatInfo],
@@ -69,6 +61,31 @@ class AudioFormatInfo(BaseInfo):
     def bits_per_second(self) -> float:
         return self._format.bit_size * self._layout.channels * self._Hz
 
+    def numpy_array(self, data: bytes) -> ndarray:
+        r"""Interpret the bytes in `data` as a numpy array.
+
+        Parameters
+        ----------
+        data : bytes
+            Binary data.
+
+        Results
+        -------
+        numpy.ndarray : a 2D array with dimensions of frames x channels.
+
+        """
+
+        samples = self.sample_format.length_in_samples(len(data))
+        
+        dim = (self.sample_layout.frame_count(samples),
+               self.sample_layout.channels)
+
+        order = ['C', 'F'][self.sample_layout.is_interleaved]
+
+        return ndarray(dim,
+                       dtype=self.sample_format.dtype_code,
+                       order=order,
+                       buffer=data)
 
 def _type_or_dict(obj, cls):
     if type(obj) == cls:

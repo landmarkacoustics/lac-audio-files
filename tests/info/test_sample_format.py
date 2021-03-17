@@ -67,3 +67,7 @@ def test_sample_format_info(size, kind, order):
     assert dict(info) == dictionary
 
     assert str(info) == str(dictionary)
+
+    data_size = 42
+
+    assert data_size // info.byte_size == info.length_in_samples(data_size)

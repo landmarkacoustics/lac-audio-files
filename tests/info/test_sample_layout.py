@@ -24,3 +24,7 @@ def test_sample_layout_info(channels, interleaved):
     assert str(layout) == str(dictionary)
 
     assert layout == SampleLayoutInfo(**dict(layout))
+
+    sample_count = 42
+
+    assert sample_count // layout.channels == layout.frame_count(sample_count)
