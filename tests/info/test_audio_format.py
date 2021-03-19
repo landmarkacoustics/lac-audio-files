@@ -1,7 +1,5 @@
 # Copyright (C) 2021 by Landmark Acoustics LLC
 
-# Copyright (C) 2021 by Landmark Acoustics LLC
-
 from sys import byteorder as system_byteorder
 
 import numpy as np
@@ -14,36 +12,74 @@ from lacaudiofiles.info.sample_format import SampleFormatInfo
 from lacaudiofiles.info.sample_layout import SampleLayoutInfo
 from lacaudiofiles.info.audio_format import AudioFormatInfo
 
-@pytest.mark.parametrize('data_type', [
-    (2, 'integer'),
-    (4, 'integer'),
-    (8, 'integer'),
-    (4, 'float'),
-    (8, 'float'),
-])
-@pytest.mark.parametrize('order', ['little', 'big'])
-@pytest.mark.parametrize('Hz', [1, 44100, 98000])
-@pytest.mark.parametrize('channels', [1, 2, 4])
-@pytest.mark.parametrize('interleaved', [True, False])
-def test_audio_format_info(data_type, order, Hz, channels, interleaved):
+@pytest.fixture(scope='module',
+                params=[
+                    (2, 'integer'),
+                    (4, 'integer'),
+                    (8, 'integer'),
+                    (4, 'float'),
+                    (8, 'float'),
+                ])
+def data_type(request):
+    r"""A 2-tuple of byte-size and floating-point"""
+    return request.param
 
+
+@pytest.fixture(scope='module',
+                params=['little', 'big'])
+def order(request):
+    r"""Text that describes the endianness of the data."""
+    return request.param
+
+
+@pytest.fixture(scope='module')
+def format_info(data_type,
+                order):
+    r"""A SampleFormatInfo object"""
     size, kind = data_type
+    return SampleFormatInfo(size,
+                            kind=='integer',
+                            order=='little')
 
-    is_integer = kind == 'integer'
-    is_little_ended = order == 'little'
 
-    format_info = SampleFormatInfo(size,
-                                   is_integer,
-                                   is_little_ended)
+@pytest.fixture(scope='module',
+                params=[1, 44100, 98000])
+def Hz(request):
+    r"""The sample rate of the sound."""
+    return request.param
 
-    layout_info = SampleLayoutInfo(channels,
-                                   interleaved)
+
+@pytest.fixture(scope='module',
+                params=[1, 2, 4])
+def channels(request):
+    r"""The number of channels in the sound data."""
+    return request.param
+
+
+@pytest.fixture(scope='module',
+                         params=[True, False])
+def is_interleaved(request):
+    r"""Whether the data are organized by channel rather than frame."""
+    return request.param
+
+
+@pytest.fixture(scope='module')
+def layout_info(channels,
+                is_interleaved):
+    r"""A SampleLayoutInfo object."""
+    return SampleLayoutInfo(channels,
+                            is_interleaved)
+
+
+def test_audio_format_info(format_info,
+                           layout_info,
+                           Hz):
 
     info = AudioFormatInfo(format_info,
                            layout_info,
                            Hz)
 
-    assert info.bits_per_second == size * 8 * channels * Hz
+    bps = format_info.bit_size * layout_info.channels * Hz
 
     assert info.sample_rate == Hz
 
@@ -61,10 +97,16 @@ def test_audio_format_info(data_type, order, Hz, channels, interleaved):
 
     x = np.arange(10, dtype=format_info.dtype_code).reshape(10, 1)
 
-    X = np.tile(x, (1, channels))
+    X = np.tile(x, (1, layout_info.channels))
 
-    byte_data = channels * x.tobytes() if interleaved else X.tobytes()
+    if layout_info.is_interleaved:
+        byte_data = layout_info.channels * x.tobytes()
+    else:
+        byte_data = X.tobytes()
 
-    compare = assert_array_equal if is_integer else assert_allclose
+    if format_info.is_integer:
+        compare = assert_array_equal
+    else:
+        compare = assert_allclose
 
     compare(info.numpy_array(byte_data), X)
