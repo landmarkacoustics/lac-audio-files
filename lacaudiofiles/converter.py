@@ -53,8 +53,8 @@ class Converter:
                      dtype = in_format.dtype_code())
 
         for x in nditer(a, op_dtypes=[self._format.dtype_code()]):
-            self._stream.write(
-        while !in_stream.eof:
+            self._stream.write()
+        while not in_stream.eof:
             n_read = in_stream.read_to(self._buffer, len(self._buffer))
             if n_read:
                 self.convert_buffer()

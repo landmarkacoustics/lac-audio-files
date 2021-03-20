@@ -69,7 +69,7 @@ class AudioFormatInfo(BaseInfo):
         data : bytes
             Binary data.
 
-        Results
+        Returns
         -------
         numpy.ndarray : a 2D array with dimensions of frames x channels.
 

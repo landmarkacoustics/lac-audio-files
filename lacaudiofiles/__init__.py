@@ -4,8 +4,11 @@ r"""Tools for manipulating audio files."""
 from . import (
     info,
     wave,
+    write_audio,
 )
 
 from .info import (
     AudioFormatInfo,
+    SampleFormatInfo,
+    SampleLayoutInfo,
 )
