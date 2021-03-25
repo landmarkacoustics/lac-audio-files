@@ -3,6 +3,6 @@
 BaseInfo
 --------
 
-.. py:module:: lacaudiofiles.info.base_info
+.. py:module:: lacaudiofiles.info.base
 
 .. autoclass:: BaseInfo

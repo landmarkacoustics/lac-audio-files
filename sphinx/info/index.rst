@@ -9,6 +9,6 @@ info
 			 formats
 
    base_info
-   sample_format
-   sample_layout
-   audio_format
+   sample
+   frame
+   audio
