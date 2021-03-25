@@ -6,9 +6,3 @@ from . import (
     wave,
     write_audio,
 )
-
-from .info import (
-    AudioFormatInfo,
-    SampleFormatInfo,
-    SampleLayoutInfo,
-)

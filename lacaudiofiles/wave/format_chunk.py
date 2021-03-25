@@ -21,6 +21,11 @@ class FormatChunk(HeaderChunk):
     sample_rate : int
         The number of frames per second, where a frame has `channels` samples.
 
+    Notes
+    -----
+    The only formats that this class can handle are 8- or 16-bit PCM integers
+    and 32- or 64-bit IEEE floats.
+
     """
 
     def __init__(self,
@@ -28,12 +33,15 @@ class FormatChunk(HeaderChunk):
                  channels,
                  sample_rate):
 
-        if bit_rate < 8:
-            raise ValueError('samples must be at least one byte.')
+        if bit_rate in [8, 16]:
+            self._tag = 0x0001
+        elif bit_rate in [32, 64]:
+            self._tag = 0x0003
+        else:
+            raise ValueError('Samples must be 8, 16, 32, or 64 bits.')
 
         super().__init__('fmt ', 16)
 
-        self._tag = 0x0003 if bit_rate >= 32 else 0x0001
         self._channels = channels
         self._sample_rate = sample_rate
         self._frame_size = channels * max(1, bit_rate // 8)

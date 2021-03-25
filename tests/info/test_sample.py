@@ -6,7 +6,7 @@ from numpy import dtype
 
 import pytest
 
-from lacaudiofiles.info.sample_format import SampleFormatInfo
+from lacaudiofiles.info import SampleInfo
 
 
 @pytest.mark.parametrize('size', [1, 2, 4, 8])
@@ -24,9 +24,9 @@ def test_sample_format_info(size, kind, order):
     byteorder = ['>', '<'][is_little_ended]
     code = f'{byteorder}{kind[0]}{size}'
 
-    info = SampleFormatInfo(size,
-                            is_integer,
-                            is_little_ended)
+    info = SampleInfo(size,
+                      is_integer,
+                      is_little_ended)
 
     assert info.byte_size == size
 

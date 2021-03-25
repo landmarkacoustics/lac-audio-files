@@ -4,10 +4,15 @@ r"""Landmark Acoustics' implementation of a wave audio writer.
     header format info cribbed from
     http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
 
+    > Notes: WAVE files often have information chunks that precede or follow
+    > the sound data (data chunk). Some programs (naively) assume that for PCM
+    > data, the preamble in the file header is exactly 44 bytes long (as in the
+    > table above) and that the rest of the file contains sound data. This is
+    > not a safe assumption.
+
 """
 
 import struct
-
 
 from .wave_chunk import WaveChunk
 from .format_chunk import FormatChunk

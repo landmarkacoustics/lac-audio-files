@@ -6,51 +6,51 @@ from typing import (
     Union,
 )
 
-from .base_info import BaseInfo
-from .sample_format import SampleFormatInfo
-from .sample_layout import SampleLayoutInfo
+from .base import BaseInfo
+from .sample import SampleInfo
+from .frame import FrameInfo
 
 from numpy import ndarray
 
 
-class AudioFormatInfo(BaseInfo):
+class AudioInfo(BaseInfo):
     r"""You need at least this much information to store sounds digitally.
 
     Parameters
     ----------
-    sample_format : Union[TypedDict, SampleFormatInfo]
+    sample : Union[TypedDict, SampleInfo]
         Details about how individual values are stored.
-    sample_layout : Union[TypedDict, SampleLayoutInfo]
+    frame : Union[TypedDict, FrameInfo]
         Details about how the values are arranged into frames and channels. 
     sample_rate : int
         The number of samples per second in the data.
 
     See Also
     --------
-    SampleFormatInfo : information about, e.g., bit rate and endianness
-    SampleLayoutInfo : the number of channels and if they're interleaved
+    SampleInfo : information about, e.g., bit rate and endianness
+    FrameInfo : the number of channels and if they're interleaved
 
     """
 
     def __init__(self,
-                 sample_format: Union[TypedDict, SampleFormatInfo],
-                 sample_layout: Union[TypedDict, SampleFormatInfo], 
+                 sample: Union[TypedDict, SampleInfo],
+                 frame: Union[TypedDict, FrameInfo], 
                  sample_rate: int) :
 
-        self._format = _type_or_dict(sample_format,
-                                     SampleFormatInfo)
+        self._format = _type_or_dict(sample,
+                                     SampleInfo)
 
-        self._layout = _type_or_dict(sample_layout,
-                                     SampleLayoutInfo)
+        self._layout = _type_or_dict(frame,
+                                     FrameInfo)
 
         self._Hz = sample_rate
 
     @property
-    def sample_format(self) -> SampleFormatInfo:
+    def sample(self) -> SampleInfo:
         return self._format
 
     @property
-    def sample_layout(self) -> SampleLayoutInfo:
+    def frame(self) -> FrameInfo:
         return self._layout
 
     @property
@@ -75,15 +75,15 @@ class AudioFormatInfo(BaseInfo):
 
         """
 
-        samples = self.sample_format.length_in_samples(len(data))
+        samples = self.sample.length_in_samples(len(data))
         
-        dim = (self.sample_layout.frame_count(samples),
-               self.sample_layout.channels)
+        dim = (self.frame.frame_count(samples),
+               self.frame.channels)
 
-        order = ['C', 'F'][self.sample_layout.is_interleaved]
+        order = ['C', 'F'][self.frame.is_interleaved]
 
         return ndarray(dim,
-                       dtype=self.sample_format.dtype_code,
+                       dtype=self.sample.dtype_code,
                        order=order,
                        buffer=data)
 

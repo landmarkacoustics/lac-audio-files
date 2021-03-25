@@ -9,9 +9,9 @@ from numpy.testing import assert_allclose
 import pytest
 
 from lacaudiofiles.info import (
-    AudioFormatInfo,
-    SampleFormatInfo,
-    SampleLayoutInfo,
+    AudioInfo,
+    SampleInfo,
+    FrameInfo,
 )
 
 from lacaudiofiles.write_audio import write_audio
@@ -39,12 +39,12 @@ def type_and_size(request):
 
 
 @pytest.fixture(scope='module')
-def fmt(type_and_size, is_le) -> SampleFormatInfo:
-    r"""A SampleFormatInfo object."""
+def fmt(type_and_size, is_le) -> SampleInfo:
+    r"""A SampleInfo object."""
     bytesize, is_integer = type_and_size
-    return SampleFormatInfo(bytesize,
-                            is_integer,
-                            is_le)
+    return SampleInfo(bytesize,
+                      is_integer,
+                      is_le)
 
 
 @pytest.fixture(scope='module',
@@ -67,10 +67,10 @@ def test_writing_different_ends(fmt,
                                 initial_data):
     r"""I don't know if the endianness works"""
 
-    layout = SampleLayoutInfo(initial_data.shape[1],
-                              is_interleaved)
+    layout = FrameInfo(initial_data.shape[1],
+                       is_interleaved)
 
-    info = AudioFormatInfo(fmt, layout, 44100)
+    info = AudioInfo(fmt, layout, 44100)
 
     stream = BytesIO(b'0' * initial_data.size)
 

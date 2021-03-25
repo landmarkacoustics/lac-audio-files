@@ -1,10 +1,10 @@
 # Copyright (C) 2021 by Landmark Acoustics LLC
 r"""Basically a dumbed-down numpy.dtype."""
 
-from .base_info import BaseInfo
+from .base import BaseInfo
 
 
-class SampleFormatInfo(BaseInfo):
+class SampleInfo(BaseInfo):
     r"""Cross-platform format information about a single piece of audio data.
 
     Parameters

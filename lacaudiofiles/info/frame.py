@@ -1,10 +1,10 @@
 # Copyright (C) 2021 by Landmark Acoustics LLC
 r"""Keeps track of how samples are arranged into an audio file."""
 
-from .base_info import BaseInfo
+from .base import BaseInfo
 
 
-class SampleLayoutInfo(BaseInfo):
+class FrameInfo(BaseInfo):
     r"""The way that individual samples are arranged in a sound file.
 
     Parameters

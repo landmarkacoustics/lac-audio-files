@@ -12,8 +12,8 @@ def test_static_functions():
 
 def test_constant_chunk_size():
     r"""The format chunk should always be 16 bytes long."""
-    unrealisitic_chunk = FormatChunk(10, 20, 30)
-    assert unrealisitic_chunk.size == 16
+    with pytest.raises(ValueError) as info:
+        unrealisitic_chunk = FormatChunk(10, 20, 30)
 
     realistic_chunk = FormatChunk(16, 2, 44100)
     assert realistic_chunk.size == 16
@@ -29,7 +29,7 @@ def test_tiny_samples_fail(bit_rate):
 
 @pytest.mark.parametrize('sample_rate', [1, 1000, 44100, 98000])
 @pytest.mark.parametrize('channels', [1, 2, 4])
-@pytest.mark.parametrize('bit_rate', [2**x for x in range(3, 10)])
+@pytest.mark.parametrize('bit_rate', [2**x for x in range(3, 7)])
 def test_format_chunk_properties(sample_rate,
                                  channels,
                                  bit_rate):

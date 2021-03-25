@@ -8,9 +8,10 @@ from numpy.testing import assert_allclose, assert_array_equal
 
 import pytest
 
-from lacaudiofiles.info.sample_format import SampleFormatInfo
-from lacaudiofiles.info.sample_layout import SampleLayoutInfo
-from lacaudiofiles.info.audio_format import AudioFormatInfo
+from lacaudiofiles.info import SampleInfo
+from lacaudiofiles.info import FrameInfo
+from lacaudiofiles.info import AudioInfo
+
 
 @pytest.fixture(scope='module',
                 params=[
@@ -35,11 +36,11 @@ def order(request):
 @pytest.fixture(scope='module')
 def format_info(data_type,
                 order):
-    r"""A SampleFormatInfo object"""
+    r"""A SampleInfo object"""
     size, kind = data_type
-    return SampleFormatInfo(size,
-                            kind=='integer',
-                            order=='little')
+    return SampleInfo(size,
+                      kind=='integer',
+                      order=='little')
 
 
 @pytest.fixture(scope='module',
@@ -57,7 +58,7 @@ def channels(request):
 
 
 @pytest.fixture(scope='module',
-                         params=[True, False])
+                params=[True, False])
 def is_interleaved(request):
     r"""Whether the data are organized by channel rather than frame."""
     return request.param
@@ -66,16 +67,16 @@ def is_interleaved(request):
 @pytest.fixture(scope='module')
 def layout_info(channels,
                 is_interleaved):
-    r"""A SampleLayoutInfo object."""
-    return SampleLayoutInfo(channels,
-                            is_interleaved)
+    r"""A FrameInfo object."""
+    return FrameInfo(channels,
+                     is_interleaved)
 
 
 def test_audio_format_info(format_info,
                            layout_info,
                            Hz):
 
-    info = AudioFormatInfo(format_info,
+    info = AudioInfo(format_info,
                            layout_info,
                            Hz)
 
@@ -84,8 +85,8 @@ def test_audio_format_info(format_info,
     assert info.sample_rate == Hz
 
     audio_dict = {
-        'sample_format' : dict(format_info),
-        'sample_layout' : dict(layout_info),
+        'sample' : dict(format_info),
+        'frame' : dict(layout_info),
         'sample_rate' : Hz,
     }
 
@@ -93,7 +94,7 @@ def test_audio_format_info(format_info,
 
     assert str(info) == str(audio_dict)
 
-    assert info == AudioFormatInfo(**dict(info))
+    assert info == AudioInfo(**dict(info))
 
     x = np.arange(10, dtype=format_info.dtype_code).reshape(10, 1)
 

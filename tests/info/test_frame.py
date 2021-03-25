@@ -2,15 +2,15 @@
 
 import pytest
 
-from lacaudiofiles.info.sample_layout import SampleLayoutInfo
+from lacaudiofiles.info import FrameInfo
 
 
 @pytest.mark.parametrize('channels', [1, 2, 4, 8])
 @pytest.mark.parametrize('interleaved', [True, False])
-def test_sample_layout_info(channels, interleaved):
-    r"""Do the layout attributes line up?"""
+def test_frame_info(channels, interleaved):
+    r"""Do the frame attributes line up?"""
 
-    layout = SampleLayoutInfo(channels, interleaved)
+    layout = FrameInfo(channels, interleaved)
 
     assert layout.channels == channels
     assert layout.is_interleaved == interleaved
@@ -23,7 +23,7 @@ def test_sample_layout_info(channels, interleaved):
     assert dict(layout) == dictionary
     assert str(layout) == str(dictionary)
 
-    assert layout == SampleLayoutInfo(**dict(layout))
+    assert layout == FrameInfo(**dict(layout))
 
     sample_count = 42
 

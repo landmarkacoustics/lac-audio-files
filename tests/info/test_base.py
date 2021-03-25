@@ -2,10 +2,10 @@
 
 import pytest
 
-from lacaudiofiles.info.base_info import BaseInfo
+from lacaudiofiles.info import BaseInfo
 
 
-def test_naked_base_info():
+def test_naked_base():
     r"""Everything should just be blank."""
 
     bi = BaseInfo()
@@ -38,7 +38,7 @@ class Modified(BaseInfo):
         return self._baz
 
 
-def test_modified_base_info():
+def test_modified_base():
     r"""Add some values to the keys and values and check functionality."""
 
     castor = Modified(3, 1, 4)
